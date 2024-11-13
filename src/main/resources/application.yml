@@ -13,5 +13,5 @@ spring:
 
     openai:
       temperature: 0.3
-      api-key: {OPEN-AI-KEY}
+      api-key: ${OPEN-AI-KEY}
       model: gpt-3.5-turbo
