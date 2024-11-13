@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: demo
+  ai:
+    vectorstore:
+      redis:
+        host: localhost
+        port: 6379
+        database: 0
+        index: faqs
+        prefix: "faq:"
+        initialize-schema: true
+
+    openai:
+      temperature: 0.3
+      api-key: {OPEN-AI-KEY}
+      model: gpt-3.5-turbo
