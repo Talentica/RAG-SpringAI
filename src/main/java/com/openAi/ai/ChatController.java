@@ -3,9 +3,12 @@ package com.openAi.ai;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/spring")
@@ -20,8 +23,14 @@ public class ChatController {
         this.vectorStore=vectorStore;
         this.dataLoaderService = dataLoaderService;
     }
+
     @GetMapping("/ai")
     String generation(@RequestParam String userInput) {
+        SearchRequest data = SearchRequest.defaults();
+        List<Document> documents = vectorStore.similaritySearch(data);
+        if (documents.isEmpty()) {
+            return "Couldn't find information in specific context.";
+        }
         return ChatClient.builder(chatModel)
                 .build().prompt()
                 .advisors(new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults()))
@@ -29,9 +38,11 @@ public class ChatController {
                 .call()
                 .content();
     }
+
+
     @PostMapping("/load")
     String load(){
-        dataLoaderService.load();
+        dataLoaderService.loadTika();
         return "loaded";
     }
 }
