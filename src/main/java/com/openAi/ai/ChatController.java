@@ -26,14 +26,16 @@ public class ChatController {
 
     @GetMapping("/ai")
     String generation(@RequestParam String userInput) {
-        SearchRequest data = SearchRequest.defaults();
-        List<Document> documents = vectorStore.similaritySearch(data);
+
+       SearchRequest request =  SearchRequest.query(userInput).withSimilarityThreshold(0.6);
+       List<Document> documents = vectorStore.similaritySearch(request);
+
         if (documents.isEmpty()) {
             return "Couldn't find information in specific context.";
         }
         return ChatClient.builder(chatModel)
                 .build().prompt()
-                .advisors(new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults()))
+                .advisors(new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withSimilarityThreshold(0.6)))
                 .user(userInput)
                 .call()
                 .content();
