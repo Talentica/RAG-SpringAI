@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for handling chat generation and document loading.
+ */
 @RestController
 @RequestMapping("/spring")
 public class ChatController {
@@ -18,17 +21,40 @@ public class ChatController {
     private final VectorStore vectorStore;
     private final DataLoaderService dataLoaderService;
 
-    public ChatController(ChatModel chatModel,VectorStore vectorStore,DataLoaderService dataLoaderService) {
+    /**
+     * Constructor for ChatController.
+     *
+     * @param chatModel the chat model used for generating responses
+     * @param vectorStore the vector store used for similarity search
+     * @param dataLoaderService the service used for loading documents
+     */
+    public ChatController(ChatModel chatModel, VectorStore vectorStore, DataLoaderService dataLoaderService) {
         this.chatModel = chatModel;
-        this.vectorStore=vectorStore;
+        this.vectorStore = vectorStore;
         this.dataLoaderService = dataLoaderService;
     }
 
-    @GetMapping("/ai")
-    String generation(@RequestParam String userInput) {
+    /**
+     * Endpoint to load documents into the vector store.
+     *
+     * @return a confirmation message after loading documents
+     */
+    @PostMapping("/load")
+    public String load() {
+        dataLoaderService.loadTika();
+        return "loaded";
+    }
 
-       SearchRequest request =  SearchRequest.query(userInput).withSimilarityThreshold(0.6);
-       List<Document> documents = vectorStore.similaritySearch(request);
+    /**
+     * Endpoint to generate a chat response based on user input.
+     *
+     * @param userInput the input query from the user
+     * @return the generated response from the OpenAI model
+     */
+    @GetMapping("/ai")
+    public String generation(@RequestParam String userInput) {
+        SearchRequest request = SearchRequest.query(userInput).withSimilarityThreshold(0.6);
+        List<Document> documents = vectorStore.similaritySearch(request);
 
         if (documents.isEmpty()) {
             return "Couldn't find information in specific context.";
@@ -39,12 +65,5 @@ public class ChatController {
                 .user(userInput)
                 .call()
                 .content();
-    }
-
-
-    @PostMapping("/load")
-    String load(){
-        dataLoaderService.loadTika();
-        return "loaded";
     }
 }
