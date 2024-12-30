@@ -33,7 +33,7 @@ mvn spring-boot:run
 ### Endpoints
 
 #### Load Documents
-**Note - The documents are loaded from the `resources/guides` folder in the project.**
+**Note - The documents are loaded from the `resources/guides` folder in the project to redis**
 
 - **URL:** `/spring/load`
 - **Method:** `POST`
