@@ -1,9 +1,10 @@
 package com.openAi.security.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter
@@ -27,5 +28,8 @@ public class UserTeamRoles{
     @JoinColumn(name = "role_id")
     private Roles userRole;
 
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "team_id")
+    @JsonIgnoreProperties(value = {"teamLeads"}, allowSetters = true)
+    private Team team;
 }

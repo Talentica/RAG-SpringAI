@@ -5,7 +5,7 @@ import com.openAi.security.enums.EntityStatus;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 

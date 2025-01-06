@@ -9,8 +9,8 @@ import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.*;
-import javax.persistence.criteria.JoinType;
+import jakarta.persistence.*;
+import jakarta.persistence.criteria.JoinType;
 import java.time.LocalDate;
 import java.util.List;
 

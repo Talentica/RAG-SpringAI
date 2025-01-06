@@ -57,7 +57,7 @@ UserTeamRoleRepository userTeamRoleRepository;
         } catch (Exception e) {
             List<Attendance> attendanceList = attendanceRepository.findByEmailIdOrderByYearDescMonthDesc(email);
             if (attendanceList == null || attendanceList.isEmpty()) {
-                throw new javax.persistence.EntityNotFoundException("User not found with email " + email);
+                throw new jakarta.persistence.EntityNotFoundException("User not found with email " + email);
             }
             UserRole role = UserRole.valueOf("People Group".equals(attendanceList.get(0).getEmployeeFunction())
                     ? "PEOPLE_GROUP" : attendanceList.get(0).getEmployeeGrade());

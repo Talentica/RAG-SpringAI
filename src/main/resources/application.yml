@@ -20,13 +20,13 @@ spring:
     ddl-auto: update
   ai:
     vectorstore:
-      redis:
-        host: localhost
-        port: 6379
-        database: 0
-        index: faqs
-        prefix: "faq:"
-        initialize-schema: true
+#      redis:
+#        host: localhost
+#        port: 6379
+#        database: 0
+#        index: faqs
+#        prefix: "faq:"
+#        initialize-schema: true
 
     openai:
       temperature: 0.3
@@ -36,3 +36,7 @@ security:
   jwtSecret: cdfe45gfbcnhf
   jwtExpirationMs: 604800000
   apiKey: 53e72eed-6f0b-4d5b-9cc5-088487d969b9
+
+customer-login:
+  site-url: https://dev-orion.talentica.com
+  login-endpoint: /login

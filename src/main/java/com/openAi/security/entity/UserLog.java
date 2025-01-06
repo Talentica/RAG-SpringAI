@@ -3,7 +3,7 @@ package com.openAi.security.entity;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
