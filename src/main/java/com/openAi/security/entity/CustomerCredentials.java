@@ -11,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Accessors(chain = true)
+@Table(name = "customer_credentials")
 public class CustomerCredentials {
     @Id
     @Column(columnDefinition = "INT(11) UNSIGNED")

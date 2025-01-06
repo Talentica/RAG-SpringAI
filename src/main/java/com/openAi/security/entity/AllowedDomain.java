@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "allowed_domain")
 public class AllowedDomain {
 
     @Id
@@ -20,15 +21,21 @@ public class AllowedDomain {
     @Column(columnDefinition = "INT(11) UNSIGNED")
     private Integer id;
 
+    @Column(name = "domain_name")
     private String domainName;
 
+    @Column(name = "customer_id")
     private Integer customerId;
 
+    @Column(name = "team_ids")
     private String teamIds;
 
+    @Column(name = "is_on_boarded")
     private Boolean isOnBoarded;
 
+    @Column(name = "on_boarded_date")
     private LocalDate onBoardedDate;
 
+    @Column(name = "data_from")
     private LocalDate dataFrom;
 }

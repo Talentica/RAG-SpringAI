@@ -13,6 +13,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user_log")
 public class UserLog {
     @Id
     @Column(columnDefinition = "INT(11) UNSIGNED")

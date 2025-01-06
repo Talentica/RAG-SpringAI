@@ -13,6 +13,7 @@ import jakarta.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user_team_roles")
 public class UserTeamRoles{
 
     @Id

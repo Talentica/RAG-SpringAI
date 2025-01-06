@@ -7,10 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,21 +28,18 @@ import java.util.List;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class WebSecurityConfig {
 
-  private final AuthenticationFilter filter;
   private final AllowedDomainRepository allowedDomainRepository;
 
   private final CorsConfiguration configuration = new CorsConfiguration();
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.cors()
-            .and()
-            .csrf().disable()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+  public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+    http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(
                             "/getToken",
@@ -49,16 +50,35 @@ public class WebSecurityConfig {
                     ).permitAll()
                     .anyRequest().authenticated()
             )
-            .exceptionHandling()
-            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-            .and()
-            .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+            .addFilterBefore(authenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
 
   @Bean
-  @Profile({"dev", "staging", "prod"})
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public AuthenticationConfiguration authenticationConfiguration(ObjectPostProcessor<Object> objectPostProcessor) {
+    AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
+    authenticationConfiguration.setObjectPostProcessor(objectPostProcessor);
+    return authenticationConfiguration;
+  }
+
+  @Bean
+  public ObjectPostProcessor<Object> objectPostProcessor() {
+    return new ObjectPostProcessor<Object>() {
+      @Override
+      public <O extends Object> O postProcess(O object) {
+        return object;
+      }
+    };
+  }
+
+  @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     updateCorsConfiguration();
     configuration.addExposedHeader("Set-Cookie");
@@ -127,5 +147,15 @@ public class WebSecurityConfig {
     List<String> origins = allowedDomainRepository.findAll()
             .stream().map(AllowedDomain::getDomainName).toList();
     configuration.setAllowedOrigins(origins);
+  }
+  @Bean
+  public AuthenticationManagerBuilder authenticationManagerBuilder(ObjectPostProcessor<Object> objectPostProcessor) {
+    return new AuthenticationManagerBuilder(objectPostProcessor);
+  }
+  @Bean
+  public UsernamePasswordAuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager) {
+    UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter();
+    filter.setAuthenticationManager(authenticationManager);
+    return filter;
   }
 }
