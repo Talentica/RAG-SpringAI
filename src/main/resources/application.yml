@@ -33,7 +33,8 @@ spring:
       api-key: ${OPEN-AI-KEY}
       model: gpt-3.5-turbo
 security:
-  jwtSecret: cdfe45gfbcnhf
+  jwtSecret:  0aQ+z+0UifxvQzCXzQ4L1AdXVXLjPjS3t3DEVWCG2SMyEVrNFHtQ6Bok106znS0+DjxMHwT2OGTcmAS5DNXFIg==
+
   jwtExpirationMs: 604800000
   apiKey: 53e72eed-6f0b-4d5b-9cc5-088487d969b9
 

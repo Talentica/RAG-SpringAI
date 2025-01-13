@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.cors.CorsConfiguration;
 
 @RestController
 @RequestMapping("/security-config")
@@ -19,7 +20,8 @@ public class ConfigController {
 
     @PostMapping("/refresh-cors-config")
     public ResponseEntity<String> refreshCorsConfig() {
-        webSecurityConfig.updateCorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
+        webSecurityConfig.updateCorsConfiguration(configuration);
         return ResponseEntity.ok("CORS configuration updated successfully");
     }
 }
