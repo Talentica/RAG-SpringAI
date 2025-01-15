@@ -31,13 +31,6 @@ public class OpenAiApplication {
     }
 
     @Bean
-    public UsernamePasswordAuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager) {
-        UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter();
-        filter.setAuthenticationManager(authenticationManager);
-        return filter;
-    }
-
-    @Bean
     public FilterRegistrationBean<AuthenticationFilter> filterRegistrationBean() {
         AuthenticationFilter filter = new AuthenticationFilter();
         FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();

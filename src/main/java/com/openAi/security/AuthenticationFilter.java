@@ -5,6 +5,10 @@ import com.openAi.security.model.UserModel;
 import com.openAi.security.service.UserService;
 import com.openAi.security.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +25,6 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Objects;
@@ -61,13 +61,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 String.format("Requested path: %s at %s by %s", path, new Date(), request.getRemoteHost()));
         if (
                 new AntPathMatcher().match("/getToken", path)
-                || new AntPathMatcher().match("/getTokenGoogleAuth", path)
-                || new AntPathMatcher().match("/getTokenUserAuth", path)
-                || new AntPathMatcher().match("/user/generatePassword", path)
-             || new AntPathMatcher().match("/resetPassword", path)
-                || HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())
-                || new AntPathMatcher().match("/", path)
-                && apiKey.equals(request.getHeader("Api-Key"))) {
+                        || new AntPathMatcher().match("/getTokenGoogleAuth", path)
+                        || new AntPathMatcher().match("/getTokenUserAuth", path)
+                        || new AntPathMatcher().match("/user/generatePassword", path)
+                        || new AntPathMatcher().match("/resetPassword", path)
+                        || new AntPathMatcher().match("/user/roles", path)
+                        || HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())
+                        || new AntPathMatcher().match("/", path)
+                        && apiKey.equals(request.getHeader("Api-Key"))) {
             filterChain.doFilter(request, response);
             return;
         }

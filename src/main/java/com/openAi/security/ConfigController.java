@@ -21,7 +21,7 @@ public class ConfigController {
     @PostMapping("/refresh-cors-config")
     public ResponseEntity<String> refreshCorsConfig() {
         CorsConfiguration configuration = new CorsConfiguration();
-        webSecurityConfig.updateCorsConfiguration(configuration);
+        webSecurityConfig.updateCorsConfiguration();
         return ResponseEntity.ok("CORS configuration updated successfully");
     }
 }
