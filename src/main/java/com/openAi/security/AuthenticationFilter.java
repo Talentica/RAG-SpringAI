@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,6 +47,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Value("${security.apiKey}")
     private String apiKey;
+    private AuthenticationManager authenticationManager;
 
     public AuthenticationFilter() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
@@ -61,11 +63,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 String.format("Requested path: %s at %s by %s", path, new Date(), request.getRemoteHost()));
         if (
                 new AntPathMatcher().match("/getToken", path)
-                        || new AntPathMatcher().match("/getTokenGoogleAuth", path)
-                        || new AntPathMatcher().match("/getTokenUserAuth", path)
-                        || new AntPathMatcher().match("/user/generatePassword", path)
-                        || new AntPathMatcher().match("/resetPassword", path)
-                        || new AntPathMatcher().match("/user/roles", path)
                         || HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())
                         || new AntPathMatcher().match("/", path)
                         && apiKey.equals(request.getHeader("Api-Key"))) {
@@ -127,6 +124,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         }
 
         throw InvalidAuthenticationException.invalidToken("Failed to parse JWT Token");
+    }
+
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
 }
 

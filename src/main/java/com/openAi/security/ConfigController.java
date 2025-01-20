@@ -16,12 +16,12 @@ import org.springframework.web.cors.CorsConfiguration;
 @RequiredArgsConstructor
 public class ConfigController {
 
-    private final WebSecurityConfig webSecurityConfig;
+    private final com.openAi.security.WebSecurityConfig webSecurityConfig;
 
     @PostMapping("/refresh-cors-config")
     public ResponseEntity<String> refreshCorsConfig() {
         CorsConfiguration configuration = new CorsConfiguration();
-        webSecurityConfig.updateCorsConfiguration();
+        webSecurityConfig.updateCorsConfiguration(configuration);
         return ResponseEntity.ok("CORS configuration updated successfully");
     }
 }
