@@ -1,17 +1,43 @@
 spring:
   application:
     name: demo
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Kolkata
+        enable_lazy_load_no_trans: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+    url: jdbc:mysql://localhost:3306/playbook
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    ddl-auto: update
   ai:
     vectorstore:
-      redis:
-        host: localhost
-        port: 6379
-        database: 0
-        index: faqs
-        prefix: "faq:"
-        initialize-schema: true
+#      redis:
+#        host: localhost
+#        port: 6379
+#        database: 0
+#        index: faqs
+#        prefix: "faq:"
+#        initialize-schema: true
 
     openai:
       temperature: 0.3
       api-key: ${OPEN-AI-KEY}
       model: gpt-3.5-turbo
+security:
+  jwtSecret: eQUxnnSq6Ypz7FvcVBFh8AzvRwInfXokdCPCgY8G3ZTVsWCcpDE0Xun3HlgWd9OqRxxkKghUTAuZLJrt4grpPQ==
+
+  jwtExpirationMs: 604800000
+  apiKey: 53e72eed-6f0b-4d5b-9cc5-088487d969b9
+
+customer-login:
+  site-url: https://dev-orion.talentica.com
+  login-endpoint: /login
