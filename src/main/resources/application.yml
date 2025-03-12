@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: demo
   ai:
@@ -15,3 +17,29 @@ spring:
       temperature: 0.3
       api-key: ${OPEN-AI-KEY}
       model: gpt-3.5-turbo
+security:
+  jwtSecret: C1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8S9t0U1v2W3x4Y5z6A7B8C9D0E1F2G3H4I5J6K7L8567B19546HJT0348g
+  jwtExpirationMs: 604800000
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/playbook
+    username: root
+    password: password
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://rds-mysql/playbook
+    username: playbookadmin
+    password: ${DB_PASSWORD}
