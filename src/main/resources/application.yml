@@ -43,7 +43,7 @@ spring:
     vectorstore:
       redis:
         host: orion-prod-redis-001.lyupna.0001.aps1.cache.amazonaws.com
-        port: 6379
+        port: 6380
         database: 0
         index: faqs
         prefix: "faq:"
