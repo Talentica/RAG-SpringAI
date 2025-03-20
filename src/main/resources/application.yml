@@ -40,6 +40,6 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:mysql://rds-mysql/playbook
+    url: jdbc:mysql://orion-prod.cyaervvtanuk.ap-south-1.rds.amazonaws.com/playbook
     username: playbookadmin
     password: ${DB_PASSWORD}
