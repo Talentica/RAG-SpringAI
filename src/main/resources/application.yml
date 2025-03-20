@@ -3,16 +3,6 @@ spring:
     active: dev
   application:
     name: demo
-  ai:
-    vectorstore:
-      redis:
-        host: localhost
-        port: 6379
-        database: 0
-        index: faqs
-        prefix: "faq:"
-        initialize-schema: true
-
     openai:
       temperature: 0.3
       api-key: ${OPEN-AI-KEY}
@@ -27,6 +17,15 @@ spring:
   config:
     activate:
       on-profile: dev
+  ai:
+    vectorstore:
+      redis:
+        host: localhost
+        port: 6379
+        database: 0
+        index: faqs
+        prefix: "faq:"
+        initialize-schema: true
   datasource:
     url: jdbc:mysql://localhost:3306/playbook
     username: root
@@ -39,6 +38,15 @@ spring:
   config:
     activate:
       on-profile: prod
+  ai:
+    vectorstore:
+      redis:
+        host: orion-prod-redis-001.lyupna.0001.aps1.cache.amazonaws.com
+        port: 6379
+        database: 0
+        index: faqs
+        prefix: "faq:"
+        initialize-schema: true
   datasource:
     url: jdbc:mysql://orion-prod.cyaervvtanuk.ap-south-1.rds.amazonaws.com/playbook
     username: playbookadmin
