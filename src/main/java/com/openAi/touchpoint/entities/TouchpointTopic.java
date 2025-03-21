@@ -8,7 +8,8 @@ import com.openAi.touchpoint.entities.TouchpointTopicType;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 
 @Entity
 @Table(name = "touchpoint_topic")
@@ -42,7 +43,6 @@ public class TouchpointTopic {
     private TouchpointTopicType topicType;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")
     private EntityStatus status = EntityStatus.ACTIVE;
 
 }

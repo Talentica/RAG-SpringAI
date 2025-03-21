@@ -3,7 +3,8 @@ package com.openAi.touchpoint.entities;
 import com.openAi.customers.Customer;
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
